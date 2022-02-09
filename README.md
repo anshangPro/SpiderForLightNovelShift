@@ -20,3 +20,6 @@ nothing happened before
 - choose Application page
 - Storage/IndexedDB/eBook_Shelf/USER_AUTHENTICATION/refresh_token
 - copy it and fill
+
+
+**STUDY ONLY! NO COMMERCIAL USE!**
