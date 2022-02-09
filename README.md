@@ -1,7 +1,7 @@
 # SpiderForLightNovelShift
 The name is spelled correctly
 
-[中文ReadMe](https://github.com/anshangPro/SpiderForLightNovelShift/README_cn.md)
+[中文ReadMe](https://github.com/anshangPro/SpiderForLightNovelShift/blob/main/README_cn.md)
 
 nothing happened before
 
