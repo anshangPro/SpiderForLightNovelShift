@@ -1,5 +1,7 @@
 # SpiderForLightNovelShift
-The name is spelled correctly
+The name is spelled correctly 
+
+A spider for LNS 
 
 [中文ReadMe](https://github.com/anshangPro/SpiderForLightNovelShift/blob/main/README_cn.md)
 
