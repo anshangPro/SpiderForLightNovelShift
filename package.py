@@ -29,7 +29,8 @@ def container(path):
     <rootfiles>
         <rootfile full-path="OEBPS/content.opf" media-type="application/oebps-package+xml"/>
    </rootfiles>
-</container>""")
+</container>
+""")
 
 
 def OEBPS(book):
@@ -38,9 +39,9 @@ def OEBPS(book):
     title = book
     dom = minidom.Document()
     package_node = dom.createElement("package")
-    package_node.setAttribute("xmlns", "http://www.idpf.org/2007/opf")
-    package_node.setAttribute("unique-identifier", "BookId")
     package_node.setAttribute("version", "2.0")
+    package_node.setAttribute("unique-identifier", "BookId")
+    package_node.setAttribute("xmlns", "http://www.idpf.org/2007/opf")
     dom.appendChild(package_node)
     metadata = dom.createElement("metadata")
     metadata.setAttribute("xmlns:dc", "http://purl.org/dc/elements/1.1/")
@@ -91,7 +92,7 @@ def OEBPS(book):
     package_node.appendChild(spine)
 
     with open(book + "/OEBPS/content.opf", "wb") as f:
-        f.write(dom.toprettyxml(encoding="UTF-8"))
+        f.write(dom.toprettyxml(encoding="utf-8"))
 
 
 def ncx(book):
@@ -153,12 +154,12 @@ def ncx(book):
 def package(book, img_counter):
     mimetype(book)
     container(book)
-    OEBPS(book)
-    ncx(book)
     while True:
         time.sleep(1)
         if img_counter[0] == img_counter[1]:
             break
+    OEBPS(book)
+    ncx(book)
     os.chdir(book)
     epub = zipfile.ZipFile((book + ".epub"), 'w')
     epub.write("mimetype", compress_type=zipfile.ZIP_STORED)

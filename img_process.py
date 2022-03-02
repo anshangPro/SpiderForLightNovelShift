@@ -19,22 +19,24 @@ def download(url, book_name, changed_url, img_counter):
     with open(book_name + "/OEBPS" + changed_url, "wb") as f:
         f.write(img_file)
         f.close()
-    print(book_name, "pic", img_counter[1], "download finish")
+    # print(book_name, "pic", img_counter[1], "download finish")
     img_counter[1] = img_counter[1] + 1
 
 
+img_re = re.compile(r"<img.*?>")
+url_re = re.compile(r'src="(?P<url>.*?)"')
+
+
 def img_process(src, img_counter,book_name=None):
-    img_re = re.compile(r"<img.*?>")
-    url_re = re.compile(r'src="(?P<url>.*?)"')
     imgs = img_re.finditer(src)
     for img in imgs:
         url = url_re.search(img.group()).group("url")
         file_name = url.split('/')[-1]
-        if url.startswith("/"):
-            url = "https://www.lightnovel.app" + url
         changed_url = "/Images/" + file_name
         src = src.replace(url, ".."+changed_url)
         img_counter[0] = img_counter[0] + 1
+        if url.startswith("/"):
+            url = "https://www.lightnovel.app" + url
         _thread.start_new_thread(download, (url, book_name, changed_url, img_counter))
     return src
 

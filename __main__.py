@@ -62,24 +62,8 @@ head_a = '''<?xml version="1.0" encoding="utf-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head><title>'''
 head_b = '''</title>
-</style>
 </head>
-<body><div style="font-family:read">'''
-
-head_old = r'''<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head><title></title>
-<style>
-@font-face {
-font-family: "read";
-src: url(../fonts/read.ttf);
-}
-</style>
-</head>
-<body><div style="font-family:read">'''
+<body><div>'''
 
 end = r'''</div></body>
 </html>'''
@@ -106,7 +90,7 @@ img_counter = [0, 0]
 
 
 def sub_thread(book_name, counter, pop_log, text):
-    # print(text)
+    pop_log = pop_log.replace('/', '、')
     with open("%s/OEBPS/Text/%03d.%s.html" % (book_name, counter, pop_log), "w", encoding='utf-8') as file:
         file.write(pop_log.join((head_a, head_b)))
         file.write(img_process(format(text), img_counter,  book_name=book_name))
@@ -115,15 +99,19 @@ def sub_thread(book_name, counter, pop_log, text):
 
 def download(url):  # web.get((By.ID, 'data-v-675005fb'))
     web.get(url)
-    login_with_token()
-    web.refresh()
     start_time = time.time()
-
-    book_name = get_element(By.XPATH,
-                            '/html/body/div[1]/div/div[2]/div/div/div[1]/div/div[1]/div[2]/div/div[2]').get_attribute(
-        'innerHTML')
+    book_name = ''
+    while True:
+        book_name = get_element(By.XPATH,
+                                '/html/body/div[1]/div/div[2]/div/div/div[1]/div/div[1]/div[2]/div/div[2]').get_attribute(
+            'innerHTML')
+        if book_name == '':
+            time.sleep(0.1)
+        else:
+            break
     name = re.search("《(?P<name>.*)》", book_name)
-    name = name.group("name")
+    if name != None:
+        name = name.group("name")
     if name is not None:
         book_name = name
     print("start book", book_name)
@@ -180,10 +168,13 @@ def login():
 
 
 def login_with_token():
-    time.sleep(0.5)
+    web.get('https://www.lightnovel.app')
     web.execute_script(login_js)
+    time.sleep(0.3)
 
 
 if __name__ == "__main__":
-    for i in range(10131, 10132):
+    login_with_token()
+    for i in range(10225, 10226):
         download("https://www.lightnovel.app/book/info/%d" % i)
+    web.close()
