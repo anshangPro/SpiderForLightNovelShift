@@ -1,5 +1,4 @@
-# SpiderForLightNovelShift
-The name is spelled correctly 
+# SpiderForLightNovelShelf
 
 A spider for LNS 
 
